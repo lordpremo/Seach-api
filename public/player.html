@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>BROKEN STREAMINGS Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
-<body style="background:#000;color:#fff;text-align:center;padding:20px">
+
+<body style="background:#000;color:#fff;text-align:center;padding:20px;font-family:sans-serif">
 
   <h2>BROKEN STREAMINGS Player</h2>
 
-  <video id="video" controls autoplay style="width:100%;max-width:900px;background:#000;border:2px solid #333;border-radius:10px"></video>
-  <p id="status">Loading...</p>
+  <video id="video" controls autoplay
+         style="width:100%;max-width:900px;background:#000;border:2px solid #333;border-radius:10px">
+  </video>
+
+  <p id="status" style="margin-top:10px;color:#ccc">Loading...</p>
 
   <script>
     const params = new URLSearchParams(window.location.search);
