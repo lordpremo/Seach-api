@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BROKEN LORD TV Player</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+  <h2>BROKEN LORD TV Player</h2>
+  <video id="video" controls autoplay width="100%" height="auto"></video>
+  <p id="status">Loading...</p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const statusEl = document.getElementById("status");
+    const video = document.getElementById("video");
+
+    if (!id) {
+      statusEl.textContent = "Missing channel id.";
+    } else {
+      fetch("/api/stream?id=" + encodeURIComponent(id))
+        .then(r => r.json())
+        .then(data => {
+          if (!data.stream) {
+            statusEl.textContent = "Stream not found.";
+            return;
+          }
+          statusEl.textContent = "";
+
+          const url = data.stream;
+
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(video);
+          } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = url;
+          } else {
+            statusEl.textContent = "HLS not supported in this browser.";
+          }
+        })
+        .catch(() => {
+          statusEl.textContent = "Failed to load stream.";
+        });
+    }
+  </script>
+</body>
+</html>
