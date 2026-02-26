@@ -55,4 +55,4 @@ export default function handler(req, res) {
   if (!url) return res.status(404).json({ error: "Stream not found" });
 
   res.status(200).json({ id, stream: url });
-      }
+}
