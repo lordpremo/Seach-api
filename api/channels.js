@@ -14,7 +14,7 @@ export default function handler(req, res) {
     { id: "kartoon", name: "Kartoon Channel" },
     { id: "toongoggles", name: "Toon Goggles" },
     { id: "babyshark", name: "Baby Shark TV" },
-    { id: "disney", name: "Disney" },
+    { id: "disney", name: "Disney Channel" },
     { id: "nickelodeon", name: "Nickelodeon" },
     { id: "ryanfriends", name: "Ryan and Friends" },
     { id: "supersimple", name: "Super Simple Songs" },
