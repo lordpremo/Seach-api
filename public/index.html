@@ -3,18 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>BROKEN STREAMINGS – Direct Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
-<body style="background:#000;color:#fff;text-align:center;padding:20px">
+
+<body style="background:#000;color:#fff;text-align:center;padding:20px;font-family:sans-serif">
 
   <h1>BROKEN STREAMINGS – LIVE PLAYER</h1>
 
-  <input id="channelId" placeholder="Ingiza ID (mfano: vevopopau)" style="padding:10px;width:260px">
-  <button onclick="play()" style="padding:10px 20px;margin-left:5px">PLAY</button>
+  <input id="channelId" placeholder="Ingiza ID (mfano: vevopopau)" 
+         style="padding:10px;width:260px;border-radius:6px;border:none">
+  <button onclick="play()" 
+          style="padding:10px 20px;margin-left:5px;border:none;border-radius:6px;background:#ff0040;color:#fff">
+    PLAY
+  </button>
 
-  <p id="status"></p>
+  <p id="status" style="margin-top:10px;color:#ccc"></p>
 
-  <video id="video" controls autoplay style="width:100%;max-width:900px;margin-top:20px;background:#000;border:2px solid #333;border-radius:10px"></video>
+  <video id="video" controls autoplay 
+         style="width:100%;max-width:900px;margin-top:20px;background:#000;border:2px solid #333;border-radius:10px">
+  </video>
 
   <script>
     function play() {
@@ -57,63 +65,4 @@
   </script>
 
 </body>
-</html><!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>BROKEN STREAMINGS – Direct Player</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-</head>
-<body style="background:#000;color:#fff;text-align:center;padding:20px">
-
-  <h1>BROKEN STREAMINGS – LIVE PLAYER</h1>
-
-  <input id="channelId" placeholder="Ingiza ID (mfano: vevopopau)" style="padding:10px;width:260px">
-  <button onclick="play()" style="padding:10px 20px;margin-left:5px">PLAY</button>
-
-  <p id="status"></p>
-
-  <video id="video" controls autoplay style="width:100%;max-width:900px;margin-top:20px;background:#000;border:2px solid #333;border-radius:10px"></video>
-
-  <script>
-    function play() {
-      const id = document.getElementById("channelId").value.trim();
-      const video = document.getElementById("video");
-      const status = document.getElementById("status");
-
-      if (!id) {
-        status.textContent = "Andika ID kwanza.";
-        return;
-      }
-
-      const url = "/api/proxy?id=" + encodeURIComponent(id);
-      status.textContent = "Loading...";
-
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(url);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          video.play();
-          status.textContent = "Playing...";
-        });
-        hls.on(Hls.Events.ERROR, () => {
-          status.textContent = "Failed to load stream.";
-        });
-      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-        video.src = url;
-        video.play()
-          .then(() => status.textContent = "Playing...")
-          .catch(() => status.textContent = "Failed to load stream.");
-      } else {
-        status.textContent = "Browser haiwezi HLS.";
-      }
-    }
-
-    document.getElementById("channelId").addEventListener("keydown", e => {
-      if (e.key === "Enter") play();
-    });
-  </script>
-
-</body>
-  </html>
+</html>
