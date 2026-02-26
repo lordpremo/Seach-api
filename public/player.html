@@ -4,46 +4,49 @@
   <meta charset="UTF-8">
   <title>BROKEN LORD TV Player</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body { background:#000; color:#fff; font-family:Arial; text-align:center; padding:20px; }
+    video { width:100%; max-width:900px; background:#000; border:2px solid #444; border-radius:10px; }
+    #status { margin-top:10px; color:#0f0; }
+  </style>
 </head>
 <body>
+
   <h2>BROKEN LORD TV Player</h2>
-  <video id="video" controls autoplay width="100%" height="auto"></video>
+  <video id="video" controls autoplay></video>
   <p id="status">Loading...</p>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
-    const statusEl = document.getElementById("status");
     const video = document.getElementById("video");
+    const status = document.getElementById("status");
 
     if (!id) {
-      statusEl.textContent = "Missing channel id.";
+      status.textContent = "Missing channel ID.";
     } else {
-      fetch("/api/stream?id=" + encodeURIComponent(id))
-        .then(r => r.json())
-        .then(data => {
-          if (!data.stream) {
-            statusEl.textContent = "Stream not found.";
-            return;
-          }
-          statusEl.textContent = "";
+      const proxyUrl = "/api/proxy?id=" + encodeURIComponent(id);
 
-          const url = data.stream;
-
-          if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(url);
-            hls.attachMedia(video);
-          } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-            video.src = url;
-          } else {
-            statusEl.textContent = "HLS not supported in this browser.";
-          }
-        })
-        .catch(() => {
-          statusEl.textContent = "Failed to load stream.";
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(proxyUrl);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play();
+          status.textContent = "Playing...";
         });
+        hls.on(Hls.Events.ERROR, () => {
+          status.textContent = "Failed to load stream.";
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = proxyUrl;
+        video.play();
+        status.textContent = "Playing...";
+      } else {
+        status.textContent = "Your browser cannot play HLS streams.";
+      }
     }
   </script>
+
 </body>
 </html>
