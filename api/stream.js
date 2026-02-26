@@ -51,9 +51,7 @@ export default function handler(req, res) {
     clubbingtv: "https://clubbingtv-samsunguk.amagi.tv/playlist.m3u8"
   };
 
-  if (!streams[id]) {
-    return res.status(404).json({ error: "Channel not found" });
-  }
+  if (!id || !streams[id]) return res.status(404).json({ error: "Channel not found" });
 
   res.status(200).json({ stream: streams[id] });
-}
+      }
