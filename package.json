@@ -1,8 +1,9 @@
 {
-  "name": "broken-lord-api",
+  "name": "broken-lord-tv",
   "version": "1.0.0",
-  "type": "module",
-  "engines": {
-    "node": "24.x"
+  "private": true,
+  "scripts": {
+    "dev": "node",
+    "start": "node"
   }
 }
